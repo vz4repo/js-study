@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Making Bingo-Table</title>
+	</head>
+	<body>
+		<h1>1-25숫자를 이용한 빙고판</h1>
+		<table id="table" border="1"></table>
+
+		<button id="button">빙고판 생성</button>
+		<script>
+			document.getElementById('button').addEventListener('click', () => {
+				// addEventListener는 해당 객체에 이벤트를 걸어줍니다.
+				let num = prompt('값을 입력해주세요'); // 빙고판 크기를 입력 받는 부분
+				let tmp = '';
+				for (i = 0; i < num; i++) {
+					tmp += '<tr>';
+					for (j = 0; j < num; j++) {
+						let num = Math.floor(Math.random() * 25) + 1; // 1~25사이의 숫자 생성
+						tmp += '<td>' + num + '</td>';
+					}
+					tmp += '</tr>'; // tmp에 5x5 tr > td 테이블 생성성
+				}
+				document.getElementById('table').innerHTML = tmp; // tmp에 저장한 문자열을 HTML로 변환
+				/* 위의 for문 과정을 풀면 이렇습니다.
+            <table> 
+                <tr>
+                    <td> num </td>
+                        ...
+                    <td> num </td>
+                </tr>
+                ...
+                <tr>
+                    <td> num </td>
+                        ...
+                    <td> num </td>
+                </tr>
+            </table> 
+            */
+			});
+		</script>
+	</body>
+</html>

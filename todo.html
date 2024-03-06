@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>TO-DO-LIST</title>
+		<style>
+			.btnDel {
+				width: 20px;
+				height: 20px;
+				background-image: url(./svg_del.svg);
+			}
+		</style>
+	</head>
+	<body>
+		<!-- <h1>to do list 만들기</h1>
+		<h2>#1 'input 박스' + 입력 '버튼'</h2>
+		<h2>#2 그 밑에 'ul-li'</h2>
+		<h2>#3 옆에 삭제 '버튼'</h2> -->
+
+		<input id="inputbox" placeholder="enter what-to-do" />
+		<!-- <button id="btn-submit" type="submit">입력</button> -->
+
+		<section id="list">
+			<div id="leftPane"></div>
+			<ul>
+				result
+			</ul>
+		</section>
+	</body>
+
+	<!-- 1. 배열 사용 x -->
+	<!-- <script>
+		let count = 0;
+
+		document.getElementById('btn-submit').onclick = function () {
+			// 1. 값 얻어오기
+			let content = document.getElementById('inputbox').value;
+
+			// 2. element 생성
+			// 2-1 li
+			let newItem = document.createElement('li');
+			// 2-2 삭제버튼 생성
+			// let delBtn = document.createElement('button');
+
+			// 3. element 내용
+			let txt = document.createTextNode(content); // 내용
+			let deltxt = document.createTextNode('del'); // 삭제버튼 내용
+
+			// 4. 조합
+			// 4.1 li 조합
+			newItem.appendChild(txt);
+			newItem.setAttribute('class', 'delcnt' + count);
+			document.querySelector('#list').appendChild(newItem);
+			// 4.2 삭제함수 붙이기
+			newItem.setAttribute('onclick', 'del(this)');
+			// // 4.2 삭제버튼 조합
+			// delBtn.setAttribute('onclick', 'del(this)');
+			// delBtn.setAttribute('class', 'delcnt' + count);
+			// delBtn.appendChild(deltxt);
+			// document.querySelector('#list').appendChild(delBtn);
+
+			count++;
+		};
+
+		// 삭제:
+		// arg로 받은 요소 포지션,인덱스 받아서 innerHTML='' 밀어버리기
+		function del(arg) {
+			document.querySelector('#list').removeChild(arg);
+		}
+	</script> -->
+
+	<!-- 2. 배열 사용 -->
+	<script>
+		// 출력용 배열 선언+초기화
+		let resultArray = [];
+		// 체크박스용 배열 선언+초기화
+		let checkedArray = [];
+		// 엔터키 키코드 값
+		const ENTER_KEY = 13;
+		// const btnSubmit = document.querySelector('#btn-submit');
+		const btnInput = document.querySelector('#inputbox');
+		const content = document.getElementById('inputbox');
+
+		// 입력창 ENTER 이벤트
+		btnInput.addEventListener('keydown', (event) => {
+			// event.isComposing 쓰면 한글입력 자모분리
+			if (event.keyCode === ENTER_KEY) {
+				// input 값 읽기
+				arrRead();
+				// 배열 출력창에 출력
+				arrWrite();
+			}
+		});
+
+		// function:저장
+		function arrRead() {
+			// inputbox 내용 얻어오기
+			// 배열에 값 넣기
+			let str = resultArray.push(
+				'<li><input type="checkbox" onclick="isChecked(this)"/>' +
+					content.value +
+					'<button class="btnDel" onclick="arrDel(this)"/></li>'
+			);
+			// 값 넣고 inputbox 공백초기화
+			content.value = '';
+		}
+
+		// function:출력 (todo)
+		function arrWrite() {
+			const listarea = document.querySelector('#list > ul');
+			listarea.innerHTML = resultArray.join('');
+		}
+
+		// function:출력 (checked)
+		function arrWrite_checked() {
+			const listarea = document.querySelector('#list > div');
+			listarea.innerHTML = checkedArray.join(' || ');
+		}
+
+		// function:삭제
+		function arrDel(pos) {
+			// 선택된 인덱스
+			let items = document.querySelectorAll('li > button');
+			let index = Array.from(items).indexOf(pos);
+			// 삭제
+			resultArray.splice(index, 1);
+			// 삭제 후 다시 출력
+			arrWrite();
+		}
+
+		// function:체크박스
+		// 1. 각각 체크
+		function isChecked(pos) {
+			// 선택된 인덱스
+			let items = document.querySelectorAll('li > input');
+			let index = Array.from(items).indexOf(pos);
+
+			let value = items[index].parentNode.textContent;
+			if (items[index].checked) {
+				checkedArray.push(value);
+				arrWrite_checked();
+			} else {
+				let targetIndex = checkedArray.indexOf(value);
+				checkedArray.splice(targetIndex, 1);
+				arrWrite_checked();
+			}
+		}
+		// 2. for문 체크 (전체선택, 전체선택해제)
+		function checkReleaseAll() {}
+	</script>
+</html>
+
+<!-- TODO: 
+1. btnDel 로 삭제하면 checked 표시 리셋
+2. 지저분한 function. param으로 값 받아서 공통부분 처리
+3. list 에 중복값이 있는 경우, checked 추가/삭제에서 구분할 수 없음
+-->

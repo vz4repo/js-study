@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="input" style="display: inline-block">
+			<input id="inputbox" placeholder="value" />
+		</div>
+		<section id="list" style="display: flex">
+			<select id="leftPane" size="1" multiple>
+				<option>default</option>
+			</select>
+			<div id="navigator">
+				<button id="moveRight" type="button" style="display: block">></button>
+				<button id="moveRightAll" type="button" style="display: block">
+					>>
+				</button>
+				<button id="moveLeftAll" type="button" style="display: block">
+					<<
+				</button>
+				<button id="moveLeft" type="button" style="display: block"><</button>
+			</div>
+			<select id="rightPane" size="1" multiple>
+				<option>default</option>
+			</select>
+		</section>
+		<script>
+			let leftArr = []; // 입력값 저장 배열(왼쪽)
+			let rightArr = []; // 이동값 저장 배열(오른쪽)
+			let selected = []; // 선택된 값 저장 배열
+			const ENTER_KEY = 13; // Enter 키코드
+			/* inputbox 위치 */
+			const inputbox = document.querySelector('#inputbox');
+			/* pane 위치 */
+			const leftPane = document.querySelector('#leftPane');
+			const rightPane = document.querySelector('#rightPane');
+			/* btn 위치 */
+			const btnMoveRight = document.querySelector('#moveRight');
+			const btnMoveRightAll = document.querySelector('#moveRightAll');
+			const btnMoveLeftAll = document.querySelector('#moveLeftAll');
+			const btnMoveLeft = document.querySelector('#moveLeft');
+			/* btn 이벤트 연결 */
+			//// a. 이러면 되려나?
+			btnMoveRight.onclick = move('right');
+			btnMoveRightAll.onclick = move('right', true);
+			btnMoveLeftAll.onclick = move('left', true);
+			btnMoveLeft.onclick = move('left');
+
+			// btnMoveRight.addEventListener('onclick', () => {move('right');});
+			// btnMoveRightAll.addEventListener('onclick', () => {move('right', true);});
+			// btnMoveLeftAll.addEventListener('onclick', () => {move('left', true);});
+			// btnMoveLeft.addEventListener('onclick', () => {move('left');});
+			// 0. window.onload()
+			// window.onload = function () {};
+
+			// 1. 입력한다
+			/* 입력창 Enter 이벤트 */
+			inputbox.addEventListener('keydown', (event) => {
+				if (event.keyCode === ENTER_KEY) {
+					// 값은 처음에 leftArr 배열에 저장
+					arrIn();
+					// leftArr 배열내용 leftPane 출력
+					arrOut(leftArr);
+				}
+			});
+			/* function() :: inputbox 값에 배열에 값 저장 */
+			function arrIn() {
+				leftArr.push(inputbox.value); // 값 배열에 저장
+				inputbox.value = ''; // 값 저장 후 초기화
+			}
+			/* function() :: 배열 모든 내용 leftPane에 출력 */
+			function arrOut(arr) {
+				let tmpVar = ''; // 결과 출력 임시변수 선언+초기화
+				for (value of arr) {
+					tmpVar += `<option>${value}</option>`; // 배열 모든 내용 임시변수에 추가
+				}
+				leftPane.innerHTML = tmpVar; // 배열 모든 내용 출력
+				leftPane.setAttribute('size', arr.length); // 창 크기 조절
+			}
+
+			// 2. 선택한다
+			/* function(direction) :: pane에 있는 selected===true 선택 */
+			function isSelected(pane) {
+				selected = Array.from(pane.options).filter((x) => x.selected === true);
+			}
+
+			// 3. 옮긴다
+			/* function(direction, all) :: 선택된 항목 direction으로 이동 */
+			function move(dest, isAll) {
+				if (arguments.length === 1) {
+					console.log(`move ${dest}`);
+					/* dest 만 */
+				} else if (arguments.length === 2) {
+					console.log(`move all ${dest} + ${isAll} `);
+					/* dest+all */
+				} else {
+					// 잘못된 args
+					console.error('[move] wrong args');
+					return false;
+				}
+			}
+			/* 오버라이딩으로 all 받는 기능 따로 구현 */
+		</script>
+	</body>
+</html>
+
+<!-- 버튼 <> 구현 ?? 좌우pane에 선택된 애들 swap하기 -->

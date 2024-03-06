@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>NodeList 값 변경 예제</title>
+	</head>
+	<body>
+		<ul>
+			<li class="test1">Item 1</li>
+			<li class="test2">Item 2</li>
+			<li class="test3">Item 3</li>
+		</ul>
+
+		<script>
+			// ul 요소의 자식 노드들을 NodeList로 가져옵니다.
+			const listItems = document.querySelectorAll('ul li');
+			function test() {
+				// NodeList를 forEach() 메서드를 사용하여 순회하면서 각 요소의 텍스트 내용을 변경합니다.
+				listItems.forEach((item, index) => {
+					item.classList.add('flipped');
+				});
+			}
+		</script>
+	</body>
+</html>

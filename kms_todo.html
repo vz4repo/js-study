@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>To-do list</title>
+	</head>
+	<body>
+		<h1>To-do List</h1>
+		<input type="text" id="input" autofocus />
+		<button type="button" id="button">입력</button>
+		<ul></ul>
+		<script>
+			let input = document.querySelector('#input');
+			let ul = document.querySelector('ul');
+			button.addEventListener('click', function () {
+				// 버튼에 클릭 이벤트 걸기
+				let li = document.createElement('li'); // 버튼을 클릭할 때마다 li태그 생성
+
+				li.innerText = input.value; // li태그에 input 값을 저장
+
+				if (input.value.trim() === '') {
+					// input.value에 아무값도 입력하지 않을 경우
+					alert('내용을 입력해주세요');
+					return;
+				}
+
+				ul.appendChild(li); // li태그를 ul 태그 안에 붙임
+
+				input.value = ''; // input 초기화
+
+				li.addEventListener('click', function () {
+					// li 태그를 클릭햇을 때 이벤트 걸기
+					if (!confirm('삭제하시겠습니까?')) return;
+					li.remove(); // li 태그 삭제
+				});
+			});
+		</script>
+	</body>
+</html>
