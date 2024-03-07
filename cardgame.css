@@ -1,23 +1,65 @@
-/* <section id="playground" style="display: flex">*/
-
-/* * {
-    width: 0;
-    height: 0;
+* { /* 기본 초기화 */
     margin: 0;
     padding: 0;
-} */
+}
+
+#playground{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid blue;
+    width: 597px;
+    height: 323px;
+     /* flex, grid 고민 */
+    /* grid-template-columns: repeat(4, 1fr) */
+}
+
+#buttons{    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #2DB400;
+    border: 2px solid green;    
+}
+
+.button{
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 50px;
+    margin: 20px 30px;
+    color: aliceblue;
+    background-color: #2DB400;
+}
+
+#timer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: xx-large;
+}
+
+#scoreBoard{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid red;
+}
 
 .card_img{
     width: 100px;
     margin: 5px;
-    opacity: 20%;
+}
+
+.hidden{
+    opacity: 10%;
 }
 
 .flipped{
     opacity: 100%;
-
-    visibility:visible;
 }
+
 
 .selected{
     opacity: 100%;
@@ -25,7 +67,6 @@
     border-style: solid;
     border-color: yellow;
     border-width: 2px;
-    visibility:visible;
 }
 
 .correct{
@@ -35,14 +76,8 @@
     border-color: green;
     border-width: 2px;
     pointer-events: none;
-    /* visibility: hidden; */
 }
 
 .warn{
     border-color: red;
-}
-
-#playground{
-    display: flex;
-    flex-wrap: wrap;
 }
