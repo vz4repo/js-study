@@ -23,14 +23,23 @@
     border: 2px solid green;    
 }
 
-.button{
+.button{    
     border: none;
     outline: none;
     cursor: pointer;
-    font-size: 50px;
+    font-size: 40px;
     margin: 20px 30px;
+    border-radius: 10px;
     color: aliceblue;
     background-color: #2DB400;
+}
+
+#btnStart{
+
+}
+
+.isStarted{
+    color: red;
 }
 
 #timer{
@@ -42,6 +51,7 @@
 
 #scoreBoard{
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     border: 2px solid red;
@@ -52,7 +62,7 @@
     margin: 5px;
 }
 
-.hidden{
+.card_hidden{
     opacity: 10%;
 }
 
@@ -80,4 +90,8 @@
 
 .warn{
     border-color: red;
+}
+
+.hidden {
+    display: none;
 }
