@@ -115,7 +115,7 @@ function shuffle() {
     
 	// 4. quizArr 내용 저장
 	for (card of quizArr) {
-		tmpString += `<img class="card_img" src="/card_img/${card}.png" />`;
+		tmpString += `<img class="card_img" src="./card_img/${card}.png" />`;
 	}
 	// 5. quizArr 출력
 	playground.innerHTML = tmpString;
@@ -196,7 +196,7 @@ function flipAll() {
  * 
 ******************************************************************/
 function hide() {
-	document.querySelector('.card_img').setAttribute('src', '/card_img/back.png');
+	document.querySelector('.card_img').setAttribute('src', './card_img/back.png');
 }
 
 /******************************************************************
@@ -271,7 +271,7 @@ function changeBtn(btnText){
     // 버튼이 시작인 경우 ->    
     btnText === '시작' ? btnStart.classList.remove('isStrated') : btnStart.classList.add('isStarted');
     btnStart.innerHTML = btnText;                   // 버튼 내용 btnText로 변경
-    console.log(`상태변경 -> [ ${btnText} ]`);        // 버튼 내용 변경 내역 console 출력    
+    console.log(`Status has been changed -> [ ${btnText} ]`);        // 버튼 내용 변경 내역 console 출력    
 }
 
 /******************************************************************
