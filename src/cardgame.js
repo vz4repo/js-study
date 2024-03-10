@@ -5,14 +5,18 @@
 ******************************************************************/
 // 대표 상수
 const CARDS_NUM = 52 - 1; // 카드 덱에 있는 수
+const ENTER_KET = 13;
 
 // 위치
 const playground = document.querySelector('#playground');
 const scoreBoard = document.querySelector('#scoreBoard');
-const timer = document.querySelector('#timer');
-const btnStart = document.querySelector('#btnStart');
-const record = document.querySelector('#record');
+const timer      = document.querySelector('#timer');
+const btnStart   = document.querySelector('#btnStart');
+const record     = document.querySelector('#record');
 const modalpname = document.querySelector('#modalpname');
+const btnSubmit  = document.querySelector('#btnSubmit');
+const nameInput  = document.querySelector('#nameInput');
+
 
 let PLAYGROUND_SIZE = 5; // 게임에서 깔아주는 카드 갯수. pair의 수와 동일.
 
@@ -314,22 +318,22 @@ function writeData() {
 ******************************************************************/
 function readData() {
     // index 불러오기
-    const maxIndex = localStorage.getItem('maxIndex');
+    const maxIndex = localStorage.getItem('maxIndex');   // localStorage에 등록된 최대 index 값
     
     // index validation
-    if(maxIndex === null){      // undef 인가? 아님 .?, ?? 사용??
+    if(maxIndex === null){                               // undef 인가? 아님 .?, ?? 사용??
         console.error(":: index null ::")
         return;
     }
 
-    // index만큼 순환. (배열이 아님에 주의)
+    record.innerHTML = '';                               // 출력 전 화면 초기화
     for(let i = 0; i <= maxIndex; i++){
         
-        let key = 'record_'+i;                              // 키 조합
-        let jsonRecord = localStorage.getItem(key);         // localStorage에 key('key') 이용해서 가져오기
+        let key = 'record_'+i;                           // 키 조합
+        let jsonRecord = localStorage.getItem(key);      // localStorage에 key('key') 이용해서 가져오기
         
-        if(jsonRecord){ // 데이터 있는 경우
-            const parsedRecord = JSON.parse(jsonRecord);    // 객체로 파싱
+        if(jsonRecord){                                  // 데이터 있는 경우
+            const parsedRecord = JSON.parse(jsonRecord); // 객체로 파싱
             
             // 화면에 출력
             record.innerHTML += `<h3> <${i==maxIndex?'최신':i}> 
@@ -367,16 +371,26 @@ async function DataIO() {
 ******************************************************************/
 function showNameModal() {
     return new Promise(function(resolve, reject) {
-        document.querySelector('#btnSubmit').addEventListener('click', function() {
-            playerName = document.querySelector('#nameInput').value;
+        // 클릭, Enter 이벤트로 getPlayername() 호출
+        btnSubmit.addEventListener('click', getPlayername);
+        nameInput.addEventListener('keydown', (event) => {
+            if (event.keyCode === ENTER_KET){       // 키코드:13
+                getPlayername();
+            }
+        });
+
+        function getPlayername() {
+            playerName = nameInput.value;           // 플레이어 이름 획득
             if (playerName.trim() === '') {         // 빈칸이름 방지
-                reject(new Error('이름을 입력해주세요.'));
+                reject(new Error('[ERROR] getPlayername()'));
             } else {
                 resolve(playerName);
                 modalpname.style.display = 'none';  // 모달 닫기
             }
-        });
+        }
+
         modalpname.style.display = 'block';         // 모달 열기
+        nameInput.focus();
     });
 }
 
