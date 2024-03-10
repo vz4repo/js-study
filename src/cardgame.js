@@ -1,11 +1,45 @@
 /******************************************************************
  * 
+ * node.js 관련  
+ * client-server-db 간에 변수명/필드명에 대한 상관관계를 깊게 생각해봐야 한다
+******************************************************************/
+async function getRecords(){
+    try{
+        const res = await fetch('/records');
+        const data = await res.json();
+        console.log('getRecords(): ', data);
+    }catch(err){
+        console.error("[ERROR] getRecords(): ",err);
+    }
+}
+
+async function putRecord(){
+    try{
+        const res = await fetch('/record',{
+            method: 'POST'
+            ,headers:{'Content-Type':'application/json'}
+            ,body: JSON.stringify({
+                playerName
+                ,difficultyLevel
+                ,cntTry
+                ,startTime
+                ,timeTaken
+            })
+        });
+        console.log(await res.text());
+    }catch(err){
+        console.error("[ERROR] putRecord(): ",err);
+    }
+}
+
+/******************************************************************
+ * 
  * 변수 선언  
  * 
 ******************************************************************/
 // 대표 상수
 const CARDS_NUM = 52 - 1; // 카드 덱에 있는 수
-const ENTER_KET = 13;
+const ENTER_KET = 13;     // 키코드
 
 // 위치
 const playground     = document.querySelector('#playground');
@@ -18,10 +52,10 @@ const modalLevel     = document.querySelector('#modalLevel');
 const btnNameSubmit  = document.querySelector('#btnNameSubmit');
 const btnLevelSubmit = document.querySelector('#btnLevelSubmit');
 const nameInput      = document.querySelector('#nameInput');
-const levelInput      = document.querySelector('#levelInput');
+const levelInput     = document.querySelector('#levelInput');
 
 
-let difficultyLevel = 5;               // 게임난이도(기본값 5), pair의 수와 동일.
+let difficultyLevel = 5;           // 게임난이도(기본값 5), pair의 수와 동일.
 let playerName;
 
 let quizSet = new Set();           // quizSet 선언+초기화
@@ -34,7 +68,7 @@ let cntPair = 0;                   // 성공 count
 let cntTry = 0;                    // 시도 count
 let timeTaken = 0;                 // 게임 소요 시간
 
-let isValueEqual;
+let isValueEqual;                  // 카드비교(T/F)
 let first;                         // 첫 선택 카드
 let second;                        // 두번째 선택 카드
 
@@ -51,7 +85,7 @@ let onTimer;                       // 타이머
 ******************************************************************/
 window.onload = function() {
 	console.log("[window onload]");
-    changeBtn('시작');                       // '게임중' -> '시작' 으로 변경
+    changeBtn('시작');  // '게임중' -> '시작' 으로 변경
 }; 		
 
 /******************************************************************
@@ -60,35 +94,34 @@ window.onload = function() {
  * 
 ******************************************************************/
 async function start() {
-    // 0. 이미 start된 게임인 경우 일시정지
-    if(isStarted) {
-        console.error(":: PAUSE ::");
-        return;
-    }
-
-	// 1. 게임 시작 전 초기화( btn시작:활성화 )
-	init();
     try{
-        await showLevelModal();
-
+        // 0. 이미 start된 게임인 경우 일시정지
+        if(isStarted) {
+            console.error(":: PAUSE ::");
+            return;
+        }
+    
+        // 1. 게임 시작 전 초기화( btn시작:활성화 )
+        init();
+        await showLevelModal();     // 시작 전 게임 난이도
+        changeBtn('게임중');          // '시작' -> '게임중'  변경
+        
+        // 1.1 게임 시작
+        shuffle();                  // 섞고 
+        addEvent();                 // 각 카드 이벤트 부여
+        flipAll();                  // 모두 보여주고
+        hideAll();                  // 모두 감추기
+        printScoreBoard();          // 결과 출력
+    
+        // 1.2 Interval 시작
+        onTimer = setInterval(function(){  // 타이머 on
+            timer.innerHTML = 
+                ((Date.now() - startTime)/1000).toFixed(3);} // 소수점 3자리까지
+                , 10);                                       // (10ms) 간격 연산
+        checkInterval = setInterval(finishGame, 20);         // 게임 종료 조건 지속적(20ms) 체크
     }catch(error){
         console.error('[ERROR] init() :', error.message);
     }
-    changeBtn('게임중');                 // '시작' -> '게임중'  변경
-    
-	// 1.1 게임 시작
-	shuffle();                         // 섞고 
-	addEvent();
-	flipAll();                         // 모두 보여주고
-	hideAll();                         // 모두 감추기
-    printScoreBoard();
-
-    // 1.2 Interval 시작
-    onTimer = setInterval(function(){  // 타이머 on
-        timer.innerHTML = 
-            ((Date.now() - startTime)/1000).toFixed(3);} // 소수점 3자리까지
-            , 10);
-    checkInterval = setInterval(finishGame, 20); // 게임 종료 지속적(20ms) 체크
 }
 
 /******************************************************************
@@ -109,6 +142,38 @@ function init() {
     second =  '';
     startTime = Date.now();
     isStarted = true;
+}
+
+/******************************************************************
+ * 
+ * showLevelModal() :: 난이도 입력 modal open/close 
+ * 
+******************************************************************/
+function showLevelModal() {
+    return new Promise(function(resolve, reject) {
+        // 클릭, Enter 이벤트로 getLevel() 호출
+        btnLevelSubmit.addEventListener('click', getLevel);
+        levelInput.addEventListener('keydown', (event) => {
+            if (event.keyCode === ENTER_KET){       // 키코드:13
+                getLevel();
+            }
+        });
+
+        function getLevel() {
+            difficultyLevel = levelInput.value*1;   // 어려움단계 획득
+            if (difficultyLevel.toString().trim() === '') { // 빈칸 방지
+                console.error('[ERROR] getLevel() :', error.message);
+            }else if(difficultyLevel >CARDS_NUM+1){ // 52개 이상
+                console.error('[ERROR] getLevel() :', error.message);
+            }else {
+                resolve(difficultyLevel);
+                modalLevel.style.display = 'none';  // 모달 닫기
+            }
+        }
+
+        modalLevel.style.display = 'block';         // 모달 열기
+        levelInput.focus();                         // input에 자동포커스
+    });
 }
 
 /******************************************************************
@@ -332,7 +397,7 @@ function showNameModal() {
         }
 
         modalPname.style.display = 'block';         // 모달 열기
-        nameInput.focus();
+        nameInput.focus();                          // input에 자동포커스
     });
 }
 
@@ -350,6 +415,8 @@ function writeData() {
         ,startTime : startTime
         ,timeTaken : timeTaken
     };
+    console.log(playerName, difficultyLevel, cntTry, startTime, timeTaken);
+    putRecord(playerName, difficultyLevel, cntTry, startTime, timeTaken);
 
     // index 불러오기
     let maxIndex = localStorage.getItem('maxIndex') || -1;
@@ -370,9 +437,9 @@ function writeData() {
  * 
 ******************************************************************/
 function readData() {
+    getRecords();
     // index 불러오기
     const maxIndex = localStorage.getItem('maxIndex');   // localStorage에 등록된 최대 index 값
-    
     // index validation
     if(maxIndex === null){                               // undef 인가? 아님 .?, ?? 사용??
         console.error(":: index null ::")
@@ -402,37 +469,8 @@ function readData() {
 }
 
 
- /* TODO !! 나중에 구현...... */
+
+/* TODO !! 나중에 구현...... */
 // start() 수행하고나서 changeBtn('일시정지'). 일시정지 status 추가
 // '게임중' -> (종료) -> '시작' 으로 변경
 
-
-/******************************************************************
- * 
- * showLevelModal() :: 난이도 입력 modal open/close 
- * 
-******************************************************************/
-function showLevelModal() {
-    return new Promise(function(resolve, reject) {
-        // 클릭, Enter 이벤트로 getLevel() 호출
-        btnLevelSubmit.addEventListener('click', getLevel);
-        levelInput.addEventListener('keydown', (event) => {
-            if (event.keyCode === ENTER_KET){       // 키코드:13
-                getLevel();
-            }
-        });
-
-        function getLevel() {
-            difficultyLevel = levelInput.value*1;   // 어려움단계 획득
-            if (difficultyLevel.toString().trim() === '') { // 빈칸 방지
-                console.error('[ERROR] getLevel() :', error.message);
-            } else {
-                resolve(difficultyLevel);
-                modalLevel.style.display = 'none';  // 모달 닫기
-            }
-        }
-
-        modalLevel.style.display = 'block';         // 모달 열기
-        levelInput.focus();
-    });
-}
