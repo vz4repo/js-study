@@ -5,7 +5,6 @@
 ******************************************************************/
 // 대표 상수
 const CARDS_NUM = 52 - 1; // 카드 덱에 있는 수
-const PLAYGROUND_SIZE = 5; // 게임에서 깔아주는 카드 갯수. pair의 수와 동일.
 
 // 위치
 const playground = document.querySelector('#playground');
@@ -13,6 +12,9 @@ const scoreBoard = document.querySelector('#scoreBoard');
 const timer = document.querySelector('#timer');
 const btnStart = document.querySelector('#btnStart');
 const record = document.querySelector('#record');
+const modalpname = document.querySelector('#modalpname');
+
+let PLAYGROUND_SIZE = 5; // 게임에서 깔아주는 카드 갯수. pair의 수와 동일.
 
 let quizSet = new Set();           // quizSet 선언+초기화
 let quizArr = [];                  // quizArr 선언+초기화
@@ -22,6 +24,7 @@ let imgPath = [];                  // addEventListener에 쓰일 NodeList 선언
 let cntSelected = 0;               // 선택된 카드 count
 let cntPair = 0;                   // 성공 count
 let cntTry = 0;                    // 시도 count
+let timeTaken = 0;                 // 게임 소요 시간
 
 let isValueEqual;
 let first;                         // 첫 선택 카드
@@ -32,6 +35,7 @@ let startTime;                     // 시작시간
 let checkInterval;                 // 종료체크 인터벌
 let onTimer;                       // 타이머
 
+let playerName;
 
 /******************************************************************
  * 
@@ -40,7 +44,7 @@ let onTimer;                       // 타이머
 ******************************************************************/
 window.onload = function() {
 	console.log("[window onload]");
-	start();
+    changeBtn('시작');                       // '게임중' -> '시작' 으로 변경
 }; 		
 
 /******************************************************************
@@ -58,17 +62,17 @@ function start() {
 
 	// 1. 게임 시작 전 초기화( btn시작:활성화 )
 	init();
-    changeBtn('게임중');
+    changeBtn('게임중');                 // '시작' -> '게임중'  변경
     
 	// 1.1 게임 시작
-	shuffle();      // 섞고 
+	shuffle();                         // 섞고 
 	addEvent();
-	flipAll();      // 모두 보여주고
-	hideAll();      // 모두 감추기
+	flipAll();                         // 모두 보여주고
+	hideAll();                         // 모두 감추기
     printScoreBoard();
 
     // 1.2 Interval 시작
-    onTimer = setInterval(function(){           // 타이머 on
+    onTimer = setInterval(function(){  // 타이머 on
         timer.innerHTML = 
             ((Date.now() - startTime)/1000).toFixed(3);} // 소수점 3자리까지
             , 10);
@@ -132,7 +136,6 @@ function addEvent() {
 		e.addEventListener('click', function() {
             getImageSrc(this);                          // 클릭된 이미지의 src
 		});
-        // e.addEventListener('click', getImageSrc(this));
 	});
 }
 
@@ -255,9 +258,11 @@ function finishGame(){
         clearInterval(onTimer);                 // Interval 종료
         clearInterval(checkInterval);           // Interval 종료
         isStarted = false;                      // flag false 처리
-        writeData()                             // localStorage 입력
-        readData();                             // localStorage 출력
-        scoreBoard.innerHTML = `<h1>총 시도 : [${cntTry}] | 성공률 : [${(cntPair/cntTry*100).toFixed(0)}%] | 소요시간 : [${timer.textContent}초]</h1>`;
+        timeTaken = timer.textContent;
+        
+        DataIO();
+
+        scoreBoard.innerHTML = `<h1>총 시도 : [${cntTry}] | 성공률 : [${(cntPair/cntTry*100).toFixed(0)}%] | 소요시간 : [${timeTaken}초]</h1>`;
         timer.innerHTML = `<h1>:: 종료 ::</h1>`; // 타이머에 종료로 
     }
 }
@@ -282,11 +287,11 @@ function changeBtn(btnText){
 function writeData() {
     // JSON 형태로 저장할 기록객체
     let newRecord = {
-        name       : 'default'
+        name       : playerName
         ,gameSize  : PLAYGROUND_SIZE
         ,totalTry  : cntTry 
         ,startTime : startTime
-        ,timeTaken : timer.textContent
+        ,timeTaken : timeTaken
     };
 
     // index 불러오기
@@ -339,6 +344,47 @@ function readData() {
     console.log(`[SUCCESS] Retrieved JSON Record & Parsed : [ ${maxIndex} ]`);
 }
 
+/******************************************************************
+ * 
+ * async DataIO() :: localStorage 입/출력 async/await 이용해서 동기적 수행으로 처리
+ * 
+******************************************************************/
+async function DataIO() {
+    try {
+        // showNameModal() 호출
+        pname = await showNameModal();
+        await writeData();                            // localStorage 입력
+        await readData();                             // localStorage 출력
+    } catch (error) {
+        console.error('[ERROR] DataIO :', error.message);
+    }
+}
+
+/******************************************************************
+ * 
+ * showNameModal() :: 이름 입력 modal open/close 
+ * 
+******************************************************************/
+function showNameModal() {
+    return new Promise(function(resolve, reject) {
+        document.querySelector('#btnSubmit').addEventListener('click', function() {
+            playerName = document.querySelector('#nameInput').value;
+            if (playerName.trim() === '') {         // 빈칸이름 방지
+                reject(new Error('이름을 입력해주세요.'));
+            } else {
+                resolve(playerName);
+                modalpname.style.display = 'none';  // 모달 닫기
+            }
+        });
+        modalpname.style.display = 'block';         // 모달 열기
+    });
+}
+
+
+
  /* TODO !! 나중에 구현...... */
 // start() 수행하고나서 changeBtn('일시정지'). 일시정지 status 추가
 // '게임중' -> (종료) -> '시작' 으로 변경
+
+
+// 난이도조절 모달창
