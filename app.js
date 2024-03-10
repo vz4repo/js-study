@@ -65,8 +65,9 @@ function getRecords(req, res) {
             return res.status(500).json({ error: '서버 내부 오류' });
         }
         
-        const query = 'SELECT * FROM dev.cardgame_record';
-        
+        const query = 'SELECT * from cardgame_record order by difficultylevel desc, timetaken';
+        // const query = 'SELECT * from cardgame_record order by difficultylevel desc, timetaken limit 3';
+
         connection.query(query, function(err, result) {
             connection.release();
             

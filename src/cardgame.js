@@ -3,11 +3,21 @@
  * node.js 관련  
  * client-server-db 간에 변수명/필드명에 대한 상관관계를 깊게 생각해봐야 한다
 ******************************************************************/
+let getData;
 async function getRecords(){
     try{
         const res = await fetch('/records');
-        const data = await res.json();
-        console.log('getRecords(): ', data);
+        getData = await res.json();
+        console.log('getRecords(): ', getData);
+        
+        getData.forEach((data, index) => {
+            // 화면에 출력(필드명 소문자 주의)
+            record.innerHTML += `<h3> <${index} 등> 
+            이름   : [${data.playername}] 
+            | 성공률   : [${((data.difficultylevel)/data.cnttry*100).toFixed(0)}%] 
+            | 소요시간 : [${data.timetaken}초]</h3>`
+});
+
     }catch(err){
         console.error("[ERROR] getRecords(): ",err);
     }
@@ -407,28 +417,7 @@ function showNameModal() {
  * 
 ******************************************************************/
 function writeData() {
-    // JSON 형태로 저장할 기록객체
-    let newRecord = {
-        name       : playerName
-        ,gameSize  : difficultyLevel
-        ,totalTry  : cntTry 
-        ,startTime : startTime
-        ,timeTaken : timeTaken
-    };
-    console.log(playerName, difficultyLevel, cntTry, startTime, timeTaken);
     putRecord(playerName, difficultyLevel, cntTry, startTime, timeTaken);
-
-    // index 불러오기
-    let maxIndex = localStorage.getItem('maxIndex') || -1;
-    maxIndex++;
-
-    // index로 키 생성
-    const key = 'record_' + maxIndex; 
-
-    localStorage.setItem(key, JSON.stringify(newRecord));           
-    localStorage.setItem('maxIndex', maxIndex);         
-
-    console.log('[SUCCESS] Data has been written to localStorage');
 }
 
 /******************************************************************
@@ -438,34 +427,7 @@ function writeData() {
 ******************************************************************/
 function readData() {
     getRecords();
-    // index 불러오기
-    const maxIndex = localStorage.getItem('maxIndex');   // localStorage에 등록된 최대 index 값
-    // index validation
-    if(maxIndex === null){                               // undef 인가? 아님 .?, ?? 사용??
-        console.error(":: index null ::")
-        return;
-    }
-
-    record.innerHTML = '';                               // 출력 전 화면 초기화
-    for(let i = 0; i <= maxIndex; i++){
-        
-        let key = 'record_'+i;                           // 키 조합
-        let jsonRecord = localStorage.getItem(key);      // localStorage에 key('key') 이용해서 가져오기
-        
-        if(jsonRecord){                                  // 데이터 있는 경우
-            const parsedRecord = JSON.parse(jsonRecord); // 객체로 파싱
-            
-            // 화면에 출력
-            record.innerHTML += `<h3> <${i==maxIndex?'최신':i}> 
-                                    이름   : [${parsedRecord.name}] 
-                                    | 성공률   : [${((parsedRecord.gameSize)/parsedRecord.totalTry*100).toFixed(0)}%] 
-                                    | 소요시간 : [${parsedRecord.timeTaken}초]</h3>`
-            ;             
-        }else {         // 데이터 없는 경우
-            console.error('[ERROR] No data found in localStorage with the specified key');
-        }
-    }
-    console.log(`[SUCCESS] Retrieved JSON Record & Parsed : [ ${maxIndex} ]`);
+    console.log(`[SUCCESS] Retrieved JSON Record & Parsed `);
 }
 
 
