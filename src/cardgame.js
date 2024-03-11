@@ -1,16 +1,16 @@
 /******************************************************************
  * 
- * node.js 관련  
+ * node.js 관련 API Call
  * client-server-db 간에 변수명/필드명에 대한 상관관계를 깊게 생각해봐야 한다
 ******************************************************************/
-let getData;
+let getData;    // response로 받는 data
 
 async function putRecord(){
     try{
         const res = await fetch('/record',{
             method: 'POST'
             ,headers:{'Content-Type':'application/json'}
-            ,body: JSON.stringify({
+            ,body: JSON.stringify({ // JSON 포맷으로 response-body 생성
                 playerName
                 ,difficultyLevel
                 ,cntTry
@@ -26,9 +26,8 @@ async function putRecord(){
 
 async function getRecords(){
     try{
-        const res = await fetch('/records');
-        getData = await res.json();
-        console.log('getRecords(): ', getData);
+        const res = await fetch('/records'); // app.js /records 엔드포인트에 GET 요청
+        getData = await res.json();          // JSON 포맷으로 response 획득
         record.innerHTML = ''
         getData.forEach((data, index) => {
             // 화면에 출력(필드명 소문자 주의)
@@ -108,7 +107,7 @@ window.onload = function() {
 ******************************************************************/
 async function start() {
     try{
-        // 0. 이미 start된 게임인 경우 일시정지
+        // 0. 이미 start된 게임인 경우 일시정지(부분 미구현)
         if(isStarted) {
             console.error(":: PAUSE ::");
             return;
@@ -174,10 +173,12 @@ function showLevelModal() {
 
         function getLevel() {
             difficultyLevel = levelInput.value*1;   // 어려움단계 획득
-            if (difficultyLevel.toString().trim() === '') { // 빈칸 방지
-                console.error('[ERROR] getLevel() :', error.message);
-            }else if(difficultyLevel >CARDS_NUM+1){ // 52개 이상
-                console.error('[ERROR] getLevel() :', error.message);
+            // if(difficultyLevel){    
+            // }else
+             if (difficultyLevel.toString().trim() === '') { // 빈칸 방지
+                console.error('[ERROR] getLevel() : 빈칸 주의');
+            }else if(difficultyLevel === 0 || difficultyLevel >CARDS_NUM+1){ // 0 or 52개 이상
+                console.error('[ERROR] getLevel() : 0 || 52 초과');
             }else {
                 resolve(difficultyLevel);
                 modalLevel.style.display = 'none';  // 모달 닫기
@@ -257,7 +258,7 @@ function getImageSrc(item) {
 
 /******************************************************************
  * 
- * hideAll() ::): 전체 감추기 
+ * hideAll() :: 전체 감추기 
  * 
 ******************************************************************/
 function hideAll() {
@@ -413,26 +414,6 @@ function showNameModal() {
         nameInput.focus();                          // input에 자동포커스
     });
 }
-
-// /******************************************************************
-//  * 
-//  * writeData() :: localStorage 이용한 JSON 형식 저장 
-//  * 
-// ******************************************************************/
-// function writeData() {
-//     putRecord(playerName, difficultyLevel, cntTry, startTime, timeTaken);
-// }
-
-// /******************************************************************
-//  * 
-//  * readData() :: localStorage 이용한 JSON 형식 가져오기 
-//  * 
-// ******************************************************************/
-// function readData() {
-//     getRecords();
-//     console.log(`[SUCCESS] Retrieved JSON Record & Parsed `);
-// }
-
 
 /* TODO !! 나중에 구현...... */
 // start() 수행하고나서 changeBtn('일시정지'). 일시정지 status 추가
