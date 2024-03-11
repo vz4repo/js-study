@@ -69,7 +69,7 @@ function getRecords(req, res) {
         // const query = 'SELECT * from cardgame_record order by difficultylevel desc, timetaken limit 3';
 
         connection.query(query, function(err, result) {
-            connection.release();
+            connection.release(); // 연결 사용 후 반납
             
             if (err) {
                 console.error("[SELECT] 쿼리 오류:", err);

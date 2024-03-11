@@ -9,8 +9,8 @@
     align-items: center;
     justify-content: center;
     border: 2px solid blue;
-    width: 597px;
-    height: 323px;
+    /* width: 597px;
+    height: 323px; */
      /* flex, grid 고민 */
     /* grid-template-columns: repeat(4, 1fr) */
 }

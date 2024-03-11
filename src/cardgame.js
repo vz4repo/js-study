@@ -4,24 +4,6 @@
  * client-server-db 간에 변수명/필드명에 대한 상관관계를 깊게 생각해봐야 한다
 ******************************************************************/
 let getData;
-async function getRecords(){
-    try{
-        const res = await fetch('/records');
-        getData = await res.json();
-        console.log('getRecords(): ', getData);
-        
-        getData.forEach((data, index) => {
-            // 화면에 출력(필드명 소문자 주의)
-            record.innerHTML += `<h3> <${index} 등> 
-            이름   : [${data.playername}] 
-            | 성공률   : [${((data.difficultylevel)/data.cnttry*100).toFixed(0)}%] 
-            | 소요시간 : [${data.timetaken}초]</h3>`
-});
-
-    }catch(err){
-        console.error("[ERROR] getRecords(): ",err);
-    }
-}
 
 async function putRecord(){
     try{
@@ -39,6 +21,27 @@ async function putRecord(){
         console.log(await res.text());
     }catch(err){
         console.error("[ERROR] putRecord(): ",err);
+    }
+}
+
+async function getRecords(){
+    try{
+        const res = await fetch('/records');
+        getData = await res.json();
+        console.log('getRecords(): ', getData);
+        record.innerHTML = ''
+        getData.forEach((data, index) => {
+            // 화면에 출력(필드명 소문자 주의)
+            record.innerHTML +=
+            `<h3> <${index+1} 등> 
+              이름    : [${data.playername}] 
+            | 단계    : [${data.difficultylevel}] 
+            | 성공률  : [${((data.difficultylevel)/data.cnttry*100).toFixed(0)}%] 
+            | 소요시간 : [${data.timetaken}초]</h3>`
+});
+
+    }catch(err){
+        console.error("[ERROR] getRecords(): ",err);
     }
 }
 
@@ -331,7 +334,7 @@ function isEqual(a, b) {
  * 
 ******************************************************************/
 function printScoreBoard(){
-    scoreBoard.innerHTML = `<h2>pair : [${cntPair}] | try : [${cntTry}]</h2>`;
+    scoreBoard.innerHTML = `<h2><현재기록> pair : [${cntPair}] | try : [${cntTry}]</h2>`;
 }
 
 /******************************************************************
@@ -374,8 +377,8 @@ async function DataIO() {
     try {
         // showNameModal() 호출
         pname = await showNameModal();
-        await writeData();                            // localStorage 입력
-        await readData();                             // localStorage 출력
+        await putRecord();   // DB 입력
+        await getRecords();  // DB 출력
     } catch (error) {
         console.error('[ERROR] DataIO() :', error.message);
     }
@@ -411,28 +414,26 @@ function showNameModal() {
     });
 }
 
-/******************************************************************
- * 
- * writeData() :: localStorage 이용한 JSON 형식 저장 
- * 
-******************************************************************/
-function writeData() {
-    putRecord(playerName, difficultyLevel, cntTry, startTime, timeTaken);
-}
+// /******************************************************************
+//  * 
+//  * writeData() :: localStorage 이용한 JSON 형식 저장 
+//  * 
+// ******************************************************************/
+// function writeData() {
+//     putRecord(playerName, difficultyLevel, cntTry, startTime, timeTaken);
+// }
 
-/******************************************************************
- * 
- * readData() :: localStorage 이용한 JSON 형식 가져오기 
- * 
-******************************************************************/
-function readData() {
-    getRecords();
-    console.log(`[SUCCESS] Retrieved JSON Record & Parsed `);
-}
-
+// /******************************************************************
+//  * 
+//  * readData() :: localStorage 이용한 JSON 형식 가져오기 
+//  * 
+// ******************************************************************/
+// function readData() {
+//     getRecords();
+//     console.log(`[SUCCESS] Retrieved JSON Record & Parsed `);
+// }
 
 
 /* TODO !! 나중에 구현...... */
 // start() 수행하고나서 changeBtn('일시정지'). 일시정지 status 추가
 // '게임중' -> (종료) -> '시작' 으로 변경
-
