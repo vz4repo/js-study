@@ -28,17 +28,21 @@ async function getRecords(){
     try{
         const res = await fetch('/records'); // app.js /records 엔드포인트에 GET 요청
         getData = await res.json();          // JSON 포맷으로 response 획득
-        record.innerHTML = ''
+        record.innerHTML = '<ul></ul>'
+        btnConfirm.addEventListener('click',  (event) => 
+             {modalBoard.style.display = 'none';}  // 모달 닫기 버튼
+        )
+        modalBoard.style.display = 'block'
+
         getData.forEach((data, index) => {
             // 화면에 출력(필드명 소문자 주의)
             record.innerHTML +=
-            `<h3> <${index+1} 등> 
-              이름    : [${data.playername}] 
+            `<li> <${index+1} 등> 
+            이름    : [${data.playername}] 
             | 단계    : [${data.difficultylevel}] 
             | 성공률  : [${((data.difficultylevel)/data.cnttry*100).toFixed(0)}%] 
-            | 소요시간 : [${data.timetaken}초]</h3>`
-});
-
+            | 소요시간 : [${data.timetaken}초]</li>`
+        });
     }catch(err){
         console.error("[ERROR] getRecords(): ",err);
     }
@@ -61,8 +65,10 @@ const btnStart       = document.querySelector('#btnStart');
 const record         = document.querySelector('#record');
 const modalPname     = document.querySelector('#modalPname');
 const modalLevel     = document.querySelector('#modalLevel');
+const modalBoard     = document.querySelector('#modalBoard');
 const btnNameSubmit  = document.querySelector('#btnNameSubmit');
 const btnLevelSubmit = document.querySelector('#btnLevelSubmit');
+const btnConfirm     = document.querySelector('#btnConfirm');
 const nameInput      = document.querySelector('#nameInput');
 const levelInput     = document.querySelector('#levelInput');
 
@@ -418,3 +424,4 @@ function showNameModal() {
 /* TODO !! 나중에 구현...... */
 // start() 수행하고나서 changeBtn('일시정지'). 일시정지 status 추가
 // '게임중' -> (종료) -> '시작' 으로 변경
+// 모달창 기능을 하나의 function으로 뽑아서 사용할 수 있는 방법???
