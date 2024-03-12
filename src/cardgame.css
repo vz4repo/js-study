@@ -140,3 +140,23 @@
     border-radius: 5px;
     box-sizing: border-box;
 }
+
+/* 첫 번째 li에 금메달 스타일 적용 */
+li:nth-child(2) {
+    font-weight: bold;
+    background-color: gold;
+    text-shadow: 0 0 5px rgba(255,255,255,0.5), 0 0 10px rgba(255,255,255,0.5), 0 0 15px rgba(255,255,255,0.5);
+
+}
+
+/* 두 번째 li에 은메달 스타일 적용 */
+li:nth-child(3) {
+    font-weight: bold;
+    background-color: silver;
+}
+
+/* 세 번째 li에 동메달 스타일 적용 */
+li:nth-child(4) {
+    font-weight: bold;
+    background-color: #cd7f32; /* 황동색 */
+}
