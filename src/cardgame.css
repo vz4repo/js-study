@@ -109,12 +109,13 @@
 }
 
 .modal-content {
+    list-style: none;
     background-color: #fff;
-    margin: 20% auto;
+    margin: 5px auto;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 1px 5px rgba(0,0,0,0.1);
-    max-width: 400px;
+    max-width: 70%;
     text-align: center;
 }
 
@@ -141,22 +142,30 @@
     box-sizing: border-box;
 }
 
-/* 첫 번째 li에 금메달 스타일 적용 */
-li:nth-child(2) {
-    font-weight: bold;
-    background-color: gold;
-    text-shadow: 0 0 5px rgba(255,255,255,0.5), 0 0 10px rgba(255,255,255,0.5), 0 0 15px rgba(255,255,255,0.5);
-
+#btnConfirm{
+    display: block;
+    margin: -25px auto;
 }
 
-/* 두 번째 li에 은메달 스타일 적용 */
-li:nth-child(3) {
+/* 랭크별 적용 */
+li:nth-child(2),
+li:nth-child(3),
+li:nth-child(4) {
+    border-radius: 5px;
     font-weight: bold;
+}
+
+/* 금 */
+li:nth-child(2) {
+    background-color: gold;
+}
+
+/* 은 */
+li:nth-child(3) {
     background-color: silver;
 }
 
-/* 세 번째 li에 동메달 스타일 적용 */
+/* 동 */
 li:nth-child(4) {
-    font-weight: bold;
     background-color: #cd7f32; /* 황동색 */
 }

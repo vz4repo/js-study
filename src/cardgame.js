@@ -26,22 +26,22 @@ async function putRecord(){
 
 async function getRecords(){
     try{
-        const res = await fetch('/records'); // app.js /records 엔드포인트에 GET 요청
-        getData = await res.json();          // JSON 포맷으로 response 획득
+        const res = await fetch('/records');             // app.js /records 엔드포인트에 GET 요청
+        getData = await res.json();                      // JSON 포맷으로 response 획득
         record.innerHTML = '<ul></ul>'
         btnConfirm.addEventListener('click',  (event) => 
-             {modalBoard.style.display = 'none';}  // 모달 닫기 버튼
+             {modalBoard.style.display = 'none';}        // 모달 닫기 버튼
         )
-        modalBoard.style.display = 'block'
+        modalBoard.style.display = 'block'               // 모달 보이기
 
         getData.forEach((data, index) => {
-            // 화면에 출력(필드명 소문자 주의)
-            record.innerHTML +=
+            record.innerHTML +=                          // 화면에 출력(필드명 소문자 주의)
             `<li> <${index+1} 등> 
-            이름    : [${data.playername}] 
-            | 단계    : [${data.difficultylevel}] 
-            | 성공률  : [${((data.difficultylevel)/data.cnttry*100).toFixed(0)}%] 
-            | 소요시간 : [${data.timetaken}초]</li>`
+            플레이어 : [ ${data.playername} ]
+            <br> 
+            [${data.difficultylevel}] 단계    
+            :: 기록 [${data.timetaken}초]
+            :: 성공률[${((data.difficultylevel)/data.cnttry*100).toFixed(0)}%] </li>`
         });
     }catch(err){
         console.error("[ERROR] getRecords(): ",err);
@@ -358,7 +358,7 @@ function finishGame(){
         timeTaken = timer.textContent;
         DataIO();                               // 게임 결과 입출력
 
-        scoreBoard.innerHTML = `<h1>총 시도 : [${cntTry}] | 성공률 : [${(cntPair/cntTry*100).toFixed(0)}%] | 소요시간 : [${timeTaken}초]</h1>`;
+        scoreBoard.innerHTML = `<h2>Try [${cntTry}] | Rate [${(cntPair/cntTry*100).toFixed(0)}%] | Taken [${timeTaken}초]</h2>`;
         timer.innerHTML = `<h1>:: 종료 ::</h1>`; // 타이머에 종료로 
     }
 }
