@@ -358,7 +358,7 @@ function finishGame(){
         timeTaken = timer.textContent;
         DataIO();                               // 게임 결과 입출력
 
-        scoreBoard.innerHTML = `<h2>Try [${cntTry}] | Rate [${(cntPair/cntTry*100).toFixed(0)}%] | Taken [${timeTaken}초]</h2>`;
+        scoreBoard.innerHTML = `<h2>Try[${cntTry}]::Taken[${timeTaken}s]::Rate[${(cntPair/cntTry*100).toFixed(0)}%]</h2>`;
         timer.innerHTML = `<h1>:: 종료 ::</h1>`; // 타이머에 종료로 
     }
 }
