@@ -178,7 +178,7 @@ function showLevelModal() {
         });
 
         function getLevel() {
-            difficultyLevel = levelInput.value*1;   // 어려움단계 획득
+            difficultyLevel = Math.abs(levelInput.value*1);   // 어려움단계 획득
             // if(difficultyLevel){    
             // }else
              if (difficultyLevel.toString().trim() === '') { // 빈칸 방지
