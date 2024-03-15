@@ -1,12 +1,15 @@
-CREATE TABLE dev.cardgame_record (
-	seq INT auto_increment NOT NULL,
-	username VARCHAR(50) DEFAULT '테스트' NOT NULL,
-	playsize INT NOT NULL,
-	try_cnt INT NOT NULL,
-	start_time INT UNSIGNED NOT NULL,
-	time_taken FLOAT(5,3) NOT NULL,
-	CONSTRAINT cardgame_PK PRIMARY KEY (seq)
-)
-ENGINE=InnoDB
+-- dev.cardgame_record definition
+CREATE TABLE cardgame_record (
+	seq 			 	int	   (10) 			NOT NULL	 AUTO_INCREMENT
+	,playername 	 	varchar(50) 			NOT NULL	 DEFAULT '테스트'
+	,difficultylevel 	int    (3) 				NOT NULL	
+	,cnttry 		 	int    (5) 				NOT NULL	
+	,starttime 		 	bigint (20) unsigned	NOT NULL	
+	,timetaken 		 	float  (53) 			NOT NULL	
+	,timestamp 		 	timestamp 				NOT NULL	 DEFAULT current_timestamp()
+	,PRIMARY KEY (seq)
+) 
+ENGINE=InnoDB 
+AUTO_INCREMENT=1000001 
 DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_general_ci;
