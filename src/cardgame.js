@@ -183,8 +183,9 @@ function showLevelModal() {
             // }else
              if (difficultyLevel.toString().trim() === '') { // 빈칸 방지
                 console.error('[ERROR] getLevel() : 빈칸 주의');
-            }else if(difficultyLevel === 0 || difficultyLevel >CARDS_NUM+1){ // 0 or 52개 이상
+            }else if(difficultyLevel === 0 || difficultyLevel >= CARDS_NUM+1){ // 0 or 52개 이상
                 console.error('[ERROR] getLevel() : 0 || 52 초과');
+                alert("[ERROR] 1 ~ 52 범위로 입력해주세요 ")
             }else {
                 resolve(difficultyLevel);
                 modalLevel.style.display = 'none';  // 모달 닫기
@@ -203,7 +204,7 @@ function showLevelModal() {
 ******************************************************************/
 function shuffle() {
 	// 1. difficultyLevel 만큼의 quizSet에 랜덤값 넣기
-	for (let i = 0; i < CARDS_NUM; i++) {
+	for (let i = 0; ; i++) {
 		quizSet.add(Math.floor(Math.random() * CARDS_NUM)); // 0 이상 CARDS_NUM 이하의 정수
 		if (quizSet.size === difficultyLevel) break;
 	}
@@ -420,6 +421,15 @@ function showNameModal() {
         nameInput.focus();                          // input에 자동포커스
     });
 }
+
+/******************************************************************
+ * 
+ * textBlink() :: toggle()을 이용한 글씨 blink 
+ * 
+******************************************************************/
+
+
+
 
 /* TODO !! 나중에 구현...... */
 // start() 수행하고나서 changeBtn('일시정지'). 일시정지 status 추가
