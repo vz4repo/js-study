@@ -65,9 +65,9 @@ function getRecords(req, res) {
             return res.status(500).json({ error: '서버 내부 오류' });
         }
         
-        const query = 'SELECT * from cardgame_record order by difficultylevel desc, timetaken';
         // const query = 'SELECT * from cardgame_record order by difficultylevel desc, timetaken limit 3';
-
+        // const query = 'SELECT * from cardgame_record order by difficultylevel desc, timetaken';
+        const query = 'select playername,difficultylevel,timetaken,((difficultylevel/52*100)+difficultylevel)+((difficultylevel/cnttry*100)*3-100)-(timetaken*(52/difficultylevel))*0.8  as score from cardgame_record order by score desc';
         connection.query(query, function(err, result) {
             connection.release(); // 연결 사용 후 반납
             
