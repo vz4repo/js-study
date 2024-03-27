@@ -5,7 +5,7 @@
 ******************************************************************/
 let getData;    // response로 받는 data
 
-async function putRecord(){
+async function putRecord(){         // INSERT 정보
     try{
         const res = await fetch('/record',{
             method: 'POST'
@@ -24,7 +24,7 @@ async function putRecord(){
     }
 }
 
-async function getRecords(){
+async function getRecords(){        // SELECT 정보
     try{
         const res = await fetch('/records');             // app.js /records 엔드포인트에 GET 요청
         getData = await res.json();                      // JSON 포맷으로 response 획득
@@ -41,7 +41,7 @@ async function getRecords(){
             <br> 
             [${data.difficultylevel}] 단계    
             :: 기록 [${data.timetaken}초]
-            :: 성공률[${((data.difficultylevel)/data.cnttry*100).toFixed(0)}%] </li>`
+            :: 점수 [${data.score} 점]</li>`
         });
     }catch(err){
         console.error("[ERROR] getRecords(): ",err);
