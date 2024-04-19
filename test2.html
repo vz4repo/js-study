@@ -1,0 +1,137 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java"
+pageEncoding="UTF-8" %> <%@ taglib prefix="c"
+uri="http://java.sun.com/jsp/jstl/core" %> <%@ taglib prefix="fn"
+uri="http://java.sun.com/jsp/jstl/functions" %>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!-- Include your other head elements here -->
+		<link
+			href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+			rel="stylesheet"
+		/>
+	</head>
+	<body>
+		<!-- Modal content -->
+
+			<div class="flex h-screen justify-center items-center">
+				<div
+					class="relative bg-white rounded-lg shadow-xl w-full max-w-6xl mx-4"
+				>
+					<!-- Modal header -->
+					<div class="flex justify-between items-center p-5 rounded-t border-b">
+						<h3 class="text-2xl font-semibold">Post Details</h3>
+						<button
+							type="button"
+							class="close-modal text-gray-900 font-semibold text-2xl"
+							onclick="closeModal()"
+						>
+							×
+						</button>
+					</div>
+					<!-- Modal body -->
+					<div class="p-6 space-y-6">
+						<textarea
+							id="modalContent"
+							rows="10"
+							class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring"
+						></textarea>
+					</div>
+					<!-- Modal footer -->
+					<div
+						class="flex items-center justify-between p-6 space-x-2 rounded-b border-t border-gray-200"
+					>
+						<button
+							type="button"
+							class="previous-btn item-right bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none"
+						>
+							Previous
+						</button>
+						<div>
+							<button
+								type="button"
+								class="new-btn bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700 focus:outline-none"
+							>
+								New
+							</button>
+							<button
+								type="button"
+								class="modify-btn bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-700 focus:outline-none"
+							>
+								Modify
+							</button>
+							<button
+								type="button"
+								class="delete-btn bg-red-500 text-white px-4 py-2 rounded hover:bg-red-800 focus:outline-none"
+							>
+								Delete
+							</button>
+							<button
+								onclick="closeModal()"
+								class="close-btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none"
+							>
+								Close
+							</button>
+						</div>
+						<button
+							type="button"
+							class="next-btn items-left bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none"
+						>
+							Next
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			// Your JavaScript will go here
+			// Add event listeners for opening and closing the modal
+			document.querySelectorAll('.seq-link').forEach((link) => {
+				link.addEventListener('click', function (event) {
+					event.preventDefault();
+					const seq = this.getAttribute('data-seq');
+					const content = postsData.find((post) => post.seq === seq).content;
+					document.getElementById('modalContent').value = content;
+					document.getElementById('postModal').classList.remove('hidden');
+				});
+			});
+
+			document.querySelectorAll('.close-modal').forEach((button) => {
+				button.addEventListener('click', function () {
+					document.getElementById('postModal').classList.add('hidden');
+				});
+			});
+
+			function closeModal(event) {
+				// Only close if the modal backdrop or close button is clicked
+				if (
+					event.target.id === 'postModal' ||
+					event.target.classList.contains('close-btn')
+				) {
+					document.getElementById('postModal').classList.add('hidden');
+				}
+			}
+
+			// Functions for handling modal buttons
+			function previousPost() {
+				/* ... */
+			}
+			function newPost() {
+				/* ... */
+			}
+			function modifyPost() {
+				/* ... */
+			}
+			function deletePost() {
+				/* ... */
+			}
+			function nextPost() {
+				/* ... */
+			}
+
+			// Logic to show/hide buttons based on the user's permission and post ownership
+			// You will need to adapt this logic to match your application's requirements
+		</script>
+	</body>
+</html>

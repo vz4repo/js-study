@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!-- Include your other head elements here -->
+		<link
+			href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+			rel="stylesheet"
+		/>
+	</head>
+	<body>
+		<!-- Main Content -->
+		<section class="bg-gray-900 text-white">
+			<!-- ... Your table and pagination here ... -->
+		</section>
+
+		<!-- Modal Structure -->
+		<div id="postModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-40">
+			<div class="flex h-screen justify-center items-center">
+				<div class="relative bg-white rounded-lg shadow-xl w-1/2">
+					<!-- Modal header -->
+					<div class="flex justify-between items-center p-5 rounded-t border-b">
+						<h3 class="text-xl font-semibold">Post Details</h3>
+						<button type="button" class="text-black close-modal">
+							&times;
+						</button>
+					</div>
+					<!-- Modal body -->
+					<div class="p-6 space-y-6">
+						<textarea
+							id="modalContent"
+							rows="5"
+							class="w-full p-2 border border-gray-300 rounded-md"
+						></textarea>
+					</div>
+					<!-- Modal footer -->
+					<div
+						class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200"
+					>
+						<button
+							type="button"
+							class="previous-btn bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800"
+						>
+							Previous
+						</button>
+						<button
+							type="button"
+							class="new-btn bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800"
+						>
+							New
+						</button>
+						<button
+							type="button"
+							class="modify-btn bg-yellow-700 text-white px-4 py-2 rounded hover:bg-yellow-800"
+						>
+							Modify
+						</button>
+						<button
+							type="button"
+							class="delete-btn bg-red-700 text-white px-4 py-2 rounded hover:bg-red-800"
+						>
+							Delete
+						</button>
+						<button
+							type="button"
+							class="close-modal bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+						>
+							Close
+						</button>
+						<button
+							type="button"
+							class="next-btn bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800"
+						>
+							Next
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			// Your JavaScript will go here
+			// Add event listeners for opening and closing the modal
+			document.querySelectorAll('.seq-link').forEach((link) => {
+				link.addEventListener('click', function (event) {
+					event.preventDefault();
+					const seq = this.getAttribute('data-seq');
+					const content = postsData.find((post) => post.seq === seq).content;
+					document.getElementById('modalContent').value = content;
+					document.getElementById('postModal').classList.remove('hidden');
+				});
+			});
+
+			document.querySelectorAll('.close-modal').forEach((button) => {
+				button.addEventListener('click', function () {
+					document.getElementById('postModal').classList.add('hidden');
+				});
+			});
+
+			// Event listener for the "open-modal" class
+			document.querySelectorAll('.open-modal').forEach(function (element) {
+				element.addEventListener('click', function (event) {
+					// Prevent the default action
+					event.preventDefault();
+
+					// Open the modal with content based on the clicked element
+					openModalWithContent(this.dataset.seq);
+
+					// Conditionally show or hide buttons
+					toggleButtonsBasedOnUser(this.dataset.author);
+				});
+			});
+
+			function openModalWithContent(seq) {
+				// Populate the modal with content
+				// Here you might fetch the content with AJAX based on `seq`
+			}
+
+			function toggleButtonsBasedOnUser(authorUsername) {
+				// Show or hide buttons based on whether the logged-in user
+				// is the author of the post
+			}
+
+			// Define your functions for previous, new, modify, delete, close, and next operations
+
+			// Functions for handling modal buttons
+			function previousPost() {
+				/* ... */
+			}
+			function newPost() {
+				/* ... */
+			}
+			function modifyPost() {
+				/* ... */
+			}
+			function deletePost() {
+				/* ... */
+			}
+			function nextPost() {
+				/* ... */
+			}
+
+			// Logic to show/hide buttons based on the user's permission and post ownership
+			// You will need to adapt this logic to match your application's requirements
+		</script>
+	</body>
+</html>
