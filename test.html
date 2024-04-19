@@ -1,0 +1,122 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Repository Interface Mockup</title>
+		<link
+			href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css"
+			rel="stylesheet"
+		/>
+	</head>
+	<body class="bg-gray-100">
+		<!-- Top Navigation Bar -->
+		<nav
+			class="bg-white px-6 py-3 flex items-center justify-between border-b border-gray-200"
+		>
+			<div class="flex items-center space-x-4">
+				<span class="font-bold text-xl text-gray-800">mulitgo</span>
+				<!-- Placeholder for additional navigation -->
+			</div>
+			<div class="flex items-center space-x-4">
+				<input
+					type="search"
+					placeholder="Search or jump to..."
+					class="rounded px-4 py-2 text-sm w-72 border border-gray-300"
+				/>
+				<!-- Placeholder for profile picture or additional icons -->
+			</div>
+		</nav>
+
+		<!-- Repository Overview -->
+		<div class="container mx-auto mt-4 bg-white p-4 rounded shadow">
+			<div class="flex items-center justify-between">
+				<div class="flex items-center space-x-4">
+					<span class="text-gray-800 font-semibold text-lg"
+						>choihwan2 / mulitgo</span
+					>
+					<span class="text-gray-500">Public</span>
+					<!-- Additional repository metadata -->
+				</div>
+				<div class="flex space-x-4">
+					<button
+						class="bg-blue-500 text-white text-sm rounded px-2 py-1 hover:bg-blue-600"
+					>
+						Watch
+					</button>
+					<button
+						class="bg-blue-500 text-white text-sm rounded px-2 py-1 hover:bg-blue-600"
+					>
+						Star
+					</button>
+					<button
+						class="bg-blue-500 text-white text-sm rounded px-2 py-1 hover:bg-blue-600"
+					>
+						Fork
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main Content and Sidebar -->
+		<div class="container mx-auto mt-4 flex gap-8">
+			<!-- Main Content: File and Directory Listing -->
+			<div class="flex-grow bg-white p-4 rounded shadow">
+				<div class="overflow-x-auto">
+					<table class="min-w-full">
+						<tbody class="text-gray-600">
+							<!-- Example file and directory list with commit messages -->
+							<tr>
+								<td class="px-6 py-4">📁 .idea</td>
+								<td class="px-6 py-4 text-right">Add project settings</td>
+							</tr>
+							<tr>
+								<td class="px-6 py-4">📁 app</td>
+								<td class="px-6 py-4 text-right">
+									Update UI layout for dashboard
+								</td>
+							</tr>
+							<tr>
+								<td class="px-6 py-4">📁 gradle/wrapper</td>
+								<td class="px-6 py-4 text-right">
+									Upgrade Gradle wrapper to 6.5
+								</td>
+							</tr>
+							<tr>
+								<td class="px-6 py-4">🖼️ README.md</td>
+								<td class="px-6 py-4 text-right">
+									Update README with contribution guidelines
+								</td>
+							</tr>
+							<!-- Repeat the pattern for more files/directories -->
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<!-- Sidebar: Repository Details -->
+			<aside class="w-1/4 bg-white p-4 rounded shadow">
+				<div class="mb-6">
+					<h3 class="font-semibold text-lg text-gray-800 mb-2">About</h3>
+					<p class="text-gray-600 text-sm">
+						Multi-purpose Android application with Firebase. See README for more
+						info.
+					</p>
+				</div>
+				<!-- More widgets or details -->
+			</aside>
+		</div>
+
+		<!-- README Section -->
+		<div class="container mx-auto my-4 p-4 bg-white rounded shadow">
+			<article class="prose prose-lg">
+				<h1>mulitgo</h1>
+				<p>
+					Sample README content for the mulitgo repository. Here you would find
+					detailed instructions, usage examples, and project documentation.
+				</p>
+			</article>
+		</div>
+	</body>
+</html>
